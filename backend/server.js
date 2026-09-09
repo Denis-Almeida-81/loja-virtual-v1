@@ -1,0 +1,47 @@
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import { PrismaClient } from "./generated/prisma/client.ts";
+
+const app = express();
+
+const prisma = new PrismaClient();
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/produtos", async (req, res) => {
+  try {
+    const produtos = await prisma.product.findMany();
+
+    res.json(produtos);
+  } catch (error) {
+    console.error("ERRO PRISMA:", error);
+    res.status(500).json({ error: "Erro ao buscar produtos" });
+  }
+});
+
+app.get("/produtos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const produto = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!produto) {
+      return res.status(404).json({ error: "Produto não encontrado" });
+    }
+
+    res.json(produto);
+  } catch (error) {
+    console.error("ERRO PRISMA:", error);
+    res.status(500).json({ error: "Erro ao buscar produto" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log("Servidor rodando em http://localhost:3000");
+});
