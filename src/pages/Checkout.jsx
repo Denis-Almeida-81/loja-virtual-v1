@@ -1,2 +1,75 @@
-import { Link, useNavigate } from 'react-router-dom'; import { useCart } from '../context/CartContext'; import { useState } from 'react'
-export default function Checkout(){const {cart,total,clearCart}=useCart(); const navigate=useNavigate(); const [payment,setPayment]=useState('Pix'); const [address,setAddress]=useState(''); function finish(e){e.preventDefault(); clearCart(); navigate('/pedido-confirmado')} if(!cart.length)return <main className="section container empty"><h1>Nenhum produto para finalizar.</h1><Link to="/produtos" className="primary-btn">Voltar para a loja</Link></main>; return <main className="section container"><div className="page-heading"><p className="eyebrow">FINALIZAÇÃO</p><h1>Checkout</h1></div><div className="checkout-layout"><form className="form-card" onSubmit={finish}><label>Endereço de entrega<textarea required value={address} onChange={e=>setAddress(e.target.value)} placeholder="Rua, número, bairro, cidade e CEP"/></label><label>Forma de pagamento<select value={payment} onChange={e=>setPayment(e.target.value)}><option>Pix</option><option>Cartão de crédito</option><option>Boleto</option></select></label><button className="primary-btn large">Finalizar pedido</button><small>Pagamento demonstrativo nesta V1.</small></form><aside className="summary"><h2>Seu pedido</h2>{cart.map(i=><div key={i.id}><span>{i.nome} × {i.quantidade}</span><strong>R$ {(i.preco*i.quantidade).toFixed(2).replace('.', ',')}</strong></div>)}<hr/><div className="summary-total"><span>Total</span><strong>R$ {total.toFixed(2).replace('.', ',')}</strong></div></aside></div></main>}
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { useState } from "react";
+export default function Checkout() {
+  const { cart, total, clearCart } = useCart();
+  const navigate = useNavigate();
+  const [payment, setPayment] = useState("Pix");
+  const [address, setAddress] = useState("");
+  function finish(e) {
+    e.preventDefault();
+    clearCart();
+    navigate("/pedido-confirmado");
+  }
+  if (!cart.length)
+    return (
+      <main className="section container empty">
+        <h1>Nenhum produto para finalizar.</h1>
+        <Link to="/produtos" className="primary-btn">
+          Voltar para a loja
+        </Link>
+      </main>
+    );
+  return (
+    <main className="section container">
+      <div className="page-heading">
+        <p className="eyebrow">FINALIZAÇÃO</p>
+        <h1>Checkout</h1>
+      </div>
+      <div className="checkout-layout">
+        <form className="form-card" onSubmit={finish}>
+          <label>
+            Endereço de entrega
+            <textarea
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Rua, número, bairro, cidade e CEP"
+            />
+          </label>
+          <label>
+            Forma de pagamento
+            <select
+              value={payment}
+              onChange={(e) => setPayment(e.target.value)}
+            >
+              <option>Pix</option>
+              <option>Cartão de crédito</option>
+              <option>Boleto</option>
+            </select>
+          </label>
+          <button className="primary-btn large">Finalizar pedido</button>
+          <small>Pagamento demonstrativo nesta V1.</small>
+        </form>
+        <aside className="summary">
+          <h2>Seu pedido</h2>
+          {cart.map((i) => (
+            <div key={i.id}>
+              <span>
+                {i.nome} × {i.quantidade}
+              </span>
+              <strong>
+                R$ {(i.preco * i.quantidade).toFixed(2).replace(".", ",")}
+              </strong>
+            </div>
+          ))}
+          <hr />
+          <div className="summary-total">
+            <span>Total</span>
+            <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
+          </div>
+        </aside>
+      </div>
+    </main>
+  );
+}

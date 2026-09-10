@@ -1,1 +1,30 @@
-export default function Footer() { return <footer className="footer"><div className="container footer-grid"><div><div className="logo light">ESSENZA<span>STORE</span></div><p>Produtos selecionados para deixar seus momentos ainda mais especiais.</p></div><div><h4>Atendimento</h4><p>WhatsApp: (11) 99999-9999</p><p>Seg a Sex · 9h às 18h</p></div><div><h4>Informações</h4><p>Política de Privacidade</p><p>Trocas e devoluções</p></div></div><div className="copyright">© 2026 Essenza Store · Projeto demonstrativo V1</div></footer> }
+export default function Footer() {
+  return (
+    <footer className="footer">
+      <div className="container footer-grid">
+        <div>
+          <div className="logo light">
+            ESSENZA<span>STORE</span>
+          </div>
+          <p>
+            Produtos selecionados para deixar seus momentos ainda mais
+            especiais.
+          </p>
+        </div>
+        <div>
+          <h4>Atendimento</h4>
+          <p>WhatsApp: (11) 99999-9999</p>
+          <p>Seg a Sex · 9h às 18h</p>
+        </div>
+        <div>
+          <h4>Informações</h4>
+          <p>Política de Privacidade</p>
+          <p>Trocas e devoluções</p>
+        </div>
+      </div>
+      <div className="copyright">
+        © 2026 Essenza Store · Projeto demonstrativo V1
+      </div>
+    </footer>
+  );
+}
