@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     async function buscarProdutos() {
       try {
-        const response = await axios.get("http://localhost:3000/produtos");
+        const response = await axios.get("https://loja-virtual-v1.onrender.com/produtos");
 
         setProdutos(response.data);
       } catch (error) {
