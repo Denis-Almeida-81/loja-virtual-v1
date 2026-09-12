@@ -10,6 +10,25 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+app.post("/usuarios", async (req, res) => {
+  try {
+    const { nome, email, senha } = req.body;
+
+    const usuario = await prisma.user.create({
+      data: {
+        nome,
+        email,
+        senha,
+      },
+    });
+
+    res.status(201).json(usuario);
+  } catch (error) {
+    console.error("ERRO AO CRIAR USUÁRIO:", error);
+    res.status(500).json({ error: "Erro ao criar usuário" });
+  }
+});
+
 app.get("/produtos", async (req, res) => {
   try {
     const produtos = await prisma.product.findMany();

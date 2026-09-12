@@ -1,15 +1,28 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../services/api";
+
 export default function Auth() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin = location.pathname === "/login";
   const [form, setForm] = useState({ nome: "", email: "", senha: "" });
-  function submit(e) {
+
+  async function submit(e) {
     e.preventDefault();
-    localStorage.setItem("essenza-user", JSON.stringify(form));
-    navigate("/checkout");
+
+    try {
+      const response = await api.post("/usuarios", form);
+
+      localStorage.setItem("essenza-user", JSON.stringify(response.data));
+
+      navigate("/checkout");
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      alert("Não foi possível criar a conta.");
+    }
   }
+
   return (
     <main className="section container auth">
       <div className="form-card">
