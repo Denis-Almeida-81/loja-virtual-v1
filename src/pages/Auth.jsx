@@ -24,6 +24,8 @@ export default function Auth() {
 
       if (error.response?.status === 401) {
         alert("E-mail ou senha inválidos.");
+      } else if (error.response?.status === 409) {
+        alert("Este e-mail já está cadastrado.");
       } else {
         alert("Não foi possível realizar a operação.");
       }

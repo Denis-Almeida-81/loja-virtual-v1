@@ -32,7 +32,16 @@ app.post("/usuarios", async (req, res) => {
     });
   } catch (error) {
     console.error("ERRO AO CRIAR USUÁRIO:", error);
-    res.status(500).json({ error: "Erro ao criar usuário" });
+
+    if (error.code === "P2002") {
+      return res.status(409).json({
+        error: "E-mail já cadastrado",
+      });
+    }
+
+    res.status(500).json({
+      error: "Erro ao criar usuário",
+    });
   }
 });
 
@@ -83,7 +92,6 @@ app.get("/produtos", async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar produtos" });
   }
 });
-
 app.get("/produtos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,13 +103,18 @@ app.get("/produtos/:id", async (req, res) => {
     });
 
     if (!produto) {
-      return res.status(404).json({ error: "Produto não encontrado" });
+      return res.status(404).json({
+        error: "Produto não encontrado",
+      });
     }
 
     res.json(produto);
   } catch (error) {
     console.error("ERRO PRISMA:", error);
-    res.status(500).json({ error: "Erro ao buscar produto" });
+
+    res.status(500).json({
+      error: "Erro ao buscar produto",
+    });
   }
 });
 
