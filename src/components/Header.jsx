@@ -1,15 +1,15 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
   const { totalItems } = useCart();
+  const { user, logout } = useAuth();
 
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("essenza-user") || "null");
-
-  function logout() {
-    localStorage.removeItem("essenza-user");
+  function handleLogout() {
+    logout();
     navigate("/");
   }
 
@@ -22,21 +22,38 @@ export default function Header() {
 
         <nav>
           <Link to="/">Início</Link>
-          <Link to="/produtos">Produtos</Link>
+
+          <Link to="/produtos">
+            Produtos
+          </Link>
 
           {user ? (
             <>
               <span>Olá, {user.nome}</span>
-              <button onClick={logout}>Sair</button>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+              >
+                Sair
+              </button>
             </>
           ) : (
-            <Link to="/login">Minha conta</Link>
+            <Link to="/login">
+              Minha conta
+            </Link>
           )}
         </nav>
 
-        <Link to="/carrinho" className="cart-link">
+        <Link
+          to="/carrinho"
+          className="cart-link"
+        >
           🛒 <span>Carrinho</span>
-          {totalItems > 0 && <b>{totalItems}</b>}
+
+          {totalItems > 0 && (
+            <b>{totalItems}</b>
+          )}
         </Link>
       </div>
     </header>
