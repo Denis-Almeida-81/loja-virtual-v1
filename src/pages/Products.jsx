@@ -8,7 +8,9 @@ export default function Products() {
   useEffect(() => {
     async function buscarProdutos() {
       try {
-        const response = await axios.get("http://localhost:3000/produtos");
+        const response = await axios.get(
+          "https://loja-virtual-v1.onrender.com/produtos",
+        );
 
         setProdutos(response.data);
       } catch (error) {
@@ -31,10 +33,7 @@ export default function Products() {
 
       <div className="products-grid">
         {produtos.map((produto) => (
-          <ProductCard
-            key={produto.id}
-            product={produto}
-          />
+          <ProductCard key={produto.id} product={produto} />
         ))}
       </div>
     </main>
