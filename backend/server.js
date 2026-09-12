@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { PrismaClient } from "./generated/prisma/client.ts";
+import bcrypt from "bcrypt";
 
 const app = express();
 
@@ -14,11 +15,13 @@ app.post("/usuarios", async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
 
+    const senhaHash = await bcrypt.hash(senha, 10);
+
     const usuario = await prisma.user.create({
       data: {
         nome,
         email,
-        senha,
+        senha: senhaHash,
       },
     });
 
