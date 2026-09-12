@@ -12,14 +12,21 @@ export default function Auth() {
     e.preventDefault();
 
     try {
-      const response = await api.post("/usuarios", form);
+      const endpoint = isLogin ? "/login" : "/usuarios";
+
+      const response = await api.post(endpoint, form);
 
       localStorage.setItem("essenza-user", JSON.stringify(response.data));
 
       navigate("/checkout");
     } catch (error) {
-      console.error("Erro ao cadastrar usuário:", error);
-      alert("Não foi possível criar a conta.");
+      console.error("Erro de autenticação:", error);
+
+      if (error.response?.status === 401) {
+        alert("E-mail ou senha inválidos.");
+      } else {
+        alert("Não foi possível realizar a operação.");
+      }
     }
   }
 

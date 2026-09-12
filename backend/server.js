@@ -25,10 +25,51 @@ app.post("/usuarios", async (req, res) => {
       },
     });
 
-    res.status(201).json(usuario);
+    res.status(201).json({
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+    });
   } catch (error) {
     console.error("ERRO AO CRIAR USUÁRIO:", error);
     res.status(500).json({ error: "Erro ao criar usuário" });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+
+    const usuario = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!usuario) {
+      return res.status(401).json({
+        error: "E-mail ou senha inválidos",
+      });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaValida) {
+      return res.status(401).json({
+        error: "E-mail ou senha inválidos",
+      });
+    }
+
+    res.json({
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+    });
+  } catch (error) {
+    console.error("ERRO AO FAZER LOGIN:", error);
+    res.status(500).json({
+      error: "Erro ao fazer login",
+    });
   }
 });
 
